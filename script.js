@@ -4,6 +4,8 @@ class HashMap {
     loadFactor = 0.75;
     capacity = 16;
 
+    capacityThreshold = this.capacity * this.loadFactor;
+
     setCalls = 0;
     collisions = 0;
 
@@ -12,7 +14,7 @@ class HashMap {
        
         const primeNumber = 31;
         for (let i = 0; i < key.length; i++) {
-            hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % 21;
+            hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
         }
         
         // console.log(`${key}: ${hashCode}`);
@@ -21,7 +23,15 @@ class HashMap {
 
     set = (key, value) => {
         let keyQuery = this.hash(key);
+        let arrayLength = this.length();
         this.setCalls++;
+
+        if (arrayLength === this.capacityThreshold) {
+            console.log(`Array length: ${arrayLength} === ${this.capacityThreshold}!!!`);
+            this.capacity *= 2;
+            this.capacityThreshold = this.capacity * this.loadFactor;
+            console.log(this.capacity, this.capacityThreshold);
+        }
 
         if (this.hashMapBuckets[keyQuery]) {
             console.log(`COLLISION!!!!!! ${this.hashMapBuckets[keyQuery].name}, THIS VALUE WILL BE UPDATED`);
@@ -55,13 +65,17 @@ class HashMap {
     has = (key) => {
         let hasKey = false;
 
-        this.currentHashMap.forEach(bucket => {
-            if (bucket) {};
+        this.hashMapBuckets.forEach(bucket => {
+            if (bucket.name === key) {
+                hasKey = true;
+            };
         });
+
+        return hasKey;
     };
     
     remove = (key) => {
-        
+
     }
     
     length = () => {
@@ -74,17 +88,28 @@ class HashMap {
         return arrayLength;
     };
     
+    clear = () => {
+        this.hashMapBuckets = [];
+        this.capacity = 12;
+        this.capacityThreshold = this.capacity * this.loadFactor;
+    }
+    
     checkSetCalls = () => {
         return this.setCalls;
-    } 
+    };
     
     checkCollisions = () => {
         return this.collisions;
-    }
+    };
 
     printMap = () => {
         return this.hashMapBuckets;
     };
+
+    logCapacityThreshold = () => {
+        console.log(this.capacityThreshold);
+    };
+
 };
 
 class MapBucket {
@@ -108,12 +133,56 @@ map.set('ice cream', 'white')
 map.set('jacket', 'blue')
 map.set('kite', 'pink')
 map.set('lion', 'golden')
+map.set('asdpple', 'red')
+map.set('zanana', 'yellow')
+map.set('cavvrot', 'orange')
+map.set('dogdasd', 'brown')
+map.set('elephanfgggsdfsdfasdgt', 'gray')
+map.set('frasdg', 'green')
+map.set('gsdrapmme', 'purple')
+map.set('faaaaaaammmmmhat', 'black')
+map.set('gce crmmmeam', 'white')
+map.set('fackemmmt', 'blue')
+map.set('ditbzmmme', 'pink')
+map.set('siobbbn', 'golden')
+map.set('applbbbe', 'red')
+map.set('bananaznxcv', 'yellow')
+map.set('cvarrotttt', 'orange')
+map.set('doggarsdasd', 'brown')
+map.set('ezxcepxcvhant', 'gray')
+map.set('froge', 'green')
+map.set('grapesqqdasd', 'purple')
+map.set('aasaaadasdhat', 'black')
+map.set('icadsasfe cream', 'white')
+map.set('jackz et', 'blue')
+map.set('ki  g dte', 'pink')
+map.set('lio hhn', 'golden')
+map.set('asaf dphhple', 'red')
+map.set('zanaasd hhhna', 'yellow')
+map.set('cavvro hht', 'orange')
+map.set('dogdgaashhhd', 'brown')
+map.set('elephanhhfgggsdfsdfasdgt', 'gray')
+map.set('frashhhhdg', 'green')
+map.set('gsdrasdasdaphhe', 'purple')
+map.set('hhahhht', 'blacfk')
+map.set('gce cafgadfgshsgreaahadfgm', 'white');
+map.set('fackefsdfsdft', 'blue');
+map.set('ddasdzxcite', 'pink');
+map.set('sziasdasdasdon', 'golden');
+map.set('zelepxvnxcvbhanhhfgggsdfsdfasdgt', 'gray');
+map.set('sfrashhhhdg', 'green');
+map.set('fgsdraphhe', 'purple');
+map.set('jjjjhahhht', 'blacfk');
+map.set('fdaasdgce creaahadfgm', 'white');
+map.set('adasdjjjfackefsdfsdft', 'blue');
+map.set('jjnjjjddasdzxcite', 'pink');
+map.set('namkszion', 'golden');
+map.set('a', 'golden');
+map.set('chunker', 'golden');
+map.clear();
+map.set('chunker', 'golden');
 
-console.log(map.length()); //should return 14 (17 .set calls in total, but 3 were collisions);
-// console.log(map.printMap());
-// console.log(`Set Calls: ${map.checkSetCalls()}`);
-// console.log(`Collisions: ${map.checkCollisions()}`);
-console.log(map.get("jacket"));
+
 
 
 
